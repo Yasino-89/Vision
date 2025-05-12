@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أنا ... إنسان قيد الإنشاء</title>
+    <style>
+        @font-face {
+            font-family: 'HelveticaNeueLTArabic-Roman';
+            src: url('HelveticaNeueLTArabic-Roman.ttf');
+        }
+
+        body {
+            font-family: 'HelveticaNeueLTArabic-Roman', sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('1.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .cover {
+            text-align: center;
+            padding: 40px;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s ease;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px;
+            border: 1px solid #E5554D;
+            position: relative;
+        }
+
+        .cover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        h1, h2, h3 {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #247EB1;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #934798;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: #247EB1;
+            margin-top: 25px;
+        }
+
+        .inspiration {
+            background-color: rgba(248, 205, 113, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 3px solid #F8CD71;
+            font-style: italic;
+            color: #555;
+        }
+
+        textarea, input[type="text"] {
+            width: 90%;
+            padding: 15px;
+            font-size: 16px;
+            margin: 15px 0;
+            border: 1px solid #86CDBB;
+            border-radius: 10px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+            font-family: 'HelveticaNeueLTArabic-Roman', sans-serif;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #247EB1;
+            box-shadow: 0 0 10px rgba(36, 126, 177, 0.2);
+            transform: scale(1.01);
+        }
+
+        button {
+            background-color: #247EB1;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'HelveticaNeueLTArabic-Roman', sans-serif;
+        }
+
+        button:hover {
+            background-color: #1a5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .small-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .youtube-video {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .youtube-video:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        #app {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .summary-box {
+            background-color: rgba(134, 205, 187, 0.2);
+            border-right: 5px solid #86CDBB;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .summary-box:hover {
+            background-color: rgba(134, 205, 187, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: #247EB1;
+            margin-bottom: 10px;
+        }
+
+        .summary-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #247EB1;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+        }
+
+        .vision-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .vision-table th {
+            background-color: #F69C7A;
+            color: white;
+            padding: 12px;
+            text-align: right;
+        }
+
+        .vision-table td {
+            padding: 12px;
+            border-bottom: 1px solid #F8CD71;
+            text-align: right;
+        }
+
+        .vision-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .vision-table tr:hover {
+            background-color: rgba(134, 205, 187, 0.1);
+        }
+
+        .wish-item {
+            background-color: rgba(230, 230, 250, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 3px solid #934798;
+        }
+
+        .wish-title {
+            font-weight: bold;
+            color: #934798;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #555;
+            border-top: 1px solid #ddd;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .skill-input-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .skill-input-container textarea {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const app = document.getElementById("app");
+        const state = {
+            currentStep: 0,
+            userData: {
+                name: "",
+                definition: "",
+                why: "",
+                wishes: [],
+                skills: [],
+                needs: [],
+                values: [],
+                satisfaction: "",
+                finalVision: "",
+                shortSummary: ""
+            }
+        };
+
+        const motivationalPhrases = {
+            why: "لماذا تهتم ببناء رؤية لحياتك؟ ما الذي ستحققه بوجود هذه الرؤية؟",
+            wish: "لا تضع حدوداً لأحلامك، اكتب كل ما تطمح إليه دون خوف",
+            skills: "كل شخص لديه مواهب فريدة، ما هي المهارات التي تميزك؟",
+            needs: "ما الدعم أو الموارد التي تحتاجها لتحقيق أحلامك؟",
+            values: "ما المبادئ التي لن تتخلى عنها أبداً؟ ما الذي يؤمن به قلبك؟",
+            satisfaction: "تخيل نفسك وقد حققت كل ما تتمنى، كيف سيكون شعورك؟"
+        };
+
+        const youtubeVideos = {
+            part1: "https://www.youtube.com/embed/JQ4bvJIqUxY",
+            part2: "https://www.youtube.com/embed/bgxOquTzAfo",
+            part3: "https://www.youtube.com/embed/tDqf4SMtrR0",
+            part4: "https://www.youtube.com/embed/w-SbMhgik1c",
+            part5: "https://www.youtube.com/embed/_uYP8zNwz1g",
+            part6: "https://www.youtube.com/embed/vP2mqFE1HTI",
+            part7: "https://www.youtube.com/embed/H21Ptqp7TEc",
+            part8: "https://www.youtube.com/embed/wlwCOUewfD4"
+        };
+
+        const steps = [
+            welcomeScreen,
+            introVision,
+            whyVision,
+            buildWishesStep,
+            buildSkillsStep,
+            buildNeedsStep,
+            buildValuesStep,
+            buildSatisfactionStep,
+            finalPreviewStep,
+            finalScreen
+        ];
+
+        function welcomeScreen() {
+            app.innerHTML = `
+                <div class="cover">
+                    <h1 class="pulse">أنا ... إنسان قيد الإنشاء...</h1>
+                    <button onclick="nextStep()">ابدأ الرحلة</button>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+        }
+
+        function introVision() {
+            app.innerHTML = `
+                <div class="cover">
+                    <h2>ما هي الرؤية الشخصية؟</h2>
+                    <div class="inspiration">${motivationalPhrases.definition}</div>
+                    <input type="text" placeholder="اكتب اسمك" oninput="state.userData.name = this.value">
+                    <div class="inspiration">${motivationalPhrases.name}</div>
+                    <textarea placeholder="ما تعريفك للرؤية الشخصية؟" oninput="state.userData.definition = this.value"></textarea>
+                    <iframe class="youtube-video" src="${youtubeVideos.part1}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <button id="nextBtn" style="display:none" onclick="nextStep()">التالي →</button>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', showNext);
+        }
+
+        function whyVision() {
+            app.innerHTML = `
+                <div class="cover">
+                    <h2>لماذا برأيك تحتاج إلى رؤية شخصية؟</h2>
+                    <div class="inspiration">${motivationalPhrases.why}</div>
+                    <textarea placeholder="اكتب إجابتك هنا" oninput="state.userData.why = this.value"></textarea>
+                    <iframe class="youtube-video" src="${youtubeVideos.part2}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <button id="nextBtn" style="display:none" onclick="nextStep()">التالي →</button>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', showNext);
+        }
+
+        function buildWishesStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <iframe class="youtube-video" src="${youtubeVideos.part3}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <div id="wishesArea" class="hidden">
+                        <h2>ما الأمنيات التي تطمح أن تكون عليها؟</h2>
+                        <div class="inspiration">${motivationalPhrases.wish}</div>
+                        <div id="wishesContainer">
+                            ${state.userData.wishes.length > 0 ? state.userData.wishes.map((wish, index) => `
+                                <div class="wish-item" data-index="${index}">
+                                    <div class="wish-title">الأمنية ${index + 1}</div>
+                                    <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value">${wish.text}</textarea>
+                                    <button onclick="removeWish(${index})" class="small-btn" style="background-color: #E5554D;">حذف الأمنية</button>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                        <button onclick="addNewWish()" class="small-btn" style="background-color: #86CDBB;">+ أضف أمنية جديدة</button>
+                        <button onclick="nextStep()">التالي →</button>
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', revealWishesForm);
+        }
+
+        function addNewWish() {
+            const newWish = { text: "", skills: [] };
+            state.userData.wishes.push(newWish);
+            
+            // إعادة بناء الواجهة دون إعادة تحميل الصفحة
+            const wishesContainer = document.getElementById("wishesContainer");
+            const index = state.userData.wishes.length - 1;
+            
+            const div = document.createElement("div");
+            div.className = "wish-item";
+            div.dataset.index = index;
+            div.innerHTML = `
+                <div class="wish-title">الأمنية ${index + 1}</div>
+                <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value"></textarea>
+                <button onclick="removeWish(${index})" class="small-btn" style="background-color: #E5554D;">حذف الأمنية</button>
+            `;
+            
+            wishesContainer.appendChild(div);
+        }
+
+        function removeWish(index) {
+            state.userData.wishes.splice(index, 1);
+            const container = document.getElementById("wishesContainer");
+            const item = container.querySelector(`[data-index="${index}"]`);
+            if (item) container.removeChild(item);
+            
+            // تحديث الفهارس للعناصر المتبقية
+            const remainingItems = container.querySelectorAll(".wish-item");
+            remainingItems.forEach((item, newIndex) => {
+                item.dataset.index = newIndex;
+                const title = item.querySelector(".wish-title");
+                if (title) title.textContent = `الأمنية ${newIndex + 1}`;
+                
+                // تحديث أحداث الإدخال وحذف الأمنية
+                const textarea = item.querySelector("textarea");
+                if (textarea) {
+                    textarea.oninput = (e) => {
+                        state.userData.wishes[newIndex].text = e.target.value;
+                    };
+                }
+                
+                const deleteBtn = item.querySelector("button");
+                if (deleteBtn) {
+                    deleteBtn.onclick = () => removeWish(newIndex);
+                }
+            });
+        }
+
+        function revealWishesForm() {
+            if (state.userData.wishes.length === 0) {
+                addNewWish();
+            }
+            document.getElementById("wishesArea").classList.remove("hidden");
+        }
+
+        function buildSkillsStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <iframe class="youtube-video" src="${youtubeVideos.part4}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <div id="skillsArea" class="hidden">
+                        <h2>ما المهارات التي تمتلكها لكل أمنية؟</h2>
+                        <div class="inspiration">${motivationalPhrases.skills}</div>
+                        <div id="skillsContainer">
+                            ${state.userData.wishes.map((wish, wishIndex) => `
+                                <div class="wish-item">
+                                    <div class="wish-title">${wish.text || "أمنية بدون عنوان"}</div>
+                                    <div id="skillsForWish${wishIndex}">
+                                        ${wish.skills.map((skill, skillIndex) => `
+                                            <div class="skill-input-container">
+                                                <textarea placeholder="اكتب مهارة" oninput="updateSkill(${wishIndex}, ${skillIndex}, this.value)">${skill}</textarea>
+                                                <button onclick="removeSkill(${wishIndex}, ${skillIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <button onclick="addNewSkill(${wishIndex})" class="small-btn" style="background-color: #86CDBB;">+ أضف مهارة جديدة</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="nextStep()">التالي →</button>
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', revealSkillsForm);
+        }
+
+        function addNewSkill(wishIndex) {
+            if (!state.userData.wishes[wishIndex].skills) {
+                state.userData.wishes[wishIndex].skills = [];
+            }
+            state.userData.wishes[wishIndex].skills.push("");
+            
+            // إضافة حقل الإدخال الجديد دون إعادة تحميل الصفحة
+            const skillsContainer = document.getElementById(`skillsForWish${wishIndex}`);
+            const skillIndex = state.userData.wishes[wishIndex].skills.length - 1;
+            
+            const div = document.createElement("div");
+            div.className = "skill-input-container";
+            div.innerHTML = `
+                <textarea placeholder="اكتب مهارة" oninput="updateSkill(${wishIndex}, ${skillIndex}, this.value)"></textarea>
+                <button onclick="removeSkill(${wishIndex}, ${skillIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+            `;
+            
+            skillsContainer.appendChild(div);
+        }
+
+        function updateSkill(wishIndex, skillIndex, value) {
+            state.userData.wishes[wishIndex].skills[skillIndex] = value;
+        }
+
+        function removeSkill(wishIndex, skillIndex) {
+            state.userData.wishes[wishIndex].skills.splice(skillIndex, 1);
+            
+            // إعادة بناء واجهة المهارات لهذه الأمنية فقط
+            const skillsContainer = document.getElementById(`skillsForWish${wishIndex}`);
+            skillsContainer.innerHTML = state.userData.wishes[wishIndex].skills.map((skill, index) => `
+                <div class="skill-input-container">
+                    <textarea placeholder="اكتب مهارة" oninput="updateSkill(${wishIndex}, ${index}, this.value)">${skill}</textarea>
+                    <button onclick="removeSkill(${wishIndex}, ${index})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function revealSkillsForm() {
+            document.getElementById("skillsArea").classList.remove("hidden");
+        }
+
+        function buildNeedsStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <iframe class="youtube-video" src="${youtubeVideos.part5}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <div id="needsArea" class="hidden">
+                        <h2>ما الذي تحتاجه لتحقيق أمنياتك؟</h2>
+                        <div class="inspiration">${motivationalPhrases.needs}</div>
+                        <div id="needsContainer">
+                            ${state.userData.wishes.map((wish, wishIndex) => `
+                                <div class="wish-item">
+                                    <div class="wish-title">${wish.text || "أمنية بدون عنوان"}</div>
+                                    <div id="needsForWish${wishIndex}">
+                                        ${((state.userData.needs[wishIndex] || [])).map((need, needIndex) => `
+                                            <div class="skill-input-container">
+                                                <textarea placeholder="اكتب احتياج" oninput="updateNeed(${wishIndex}, ${needIndex}, this.value)">${need}</textarea>
+                                                <button onclick="removeNeed(${wishIndex}, ${needIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <button onclick="addNewNeed(${wishIndex})" class="small-btn" style="background-color: #86CDBB;">+ أضف احتياج جديد</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="nextStep()">التالي →</button>
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', revealNeedsForm);
+        }
+
+        function addNewNeed(wishIndex) {
+            if (!state.userData.needs[wishIndex]) {
+                state.userData.needs[wishIndex] = [];
+            }
+            state.userData.needs[wishIndex].push("");
+            
+            const needsContainer = document.getElementById(`needsForWish${wishIndex}`);
+            const needIndex = state.userData.needs[wishIndex].length - 1;
+            
+            const div = document.createElement("div");
+            div.className = "skill-input-container";
+            div.innerHTML = `
+                <textarea placeholder="اكتب احتياج" oninput="updateNeed(${wishIndex}, ${needIndex}, this.value)"></textarea>
+                <button onclick="removeNeed(${wishIndex}, ${needIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+            `;
+            
+            needsContainer.appendChild(div);
+        }
+
+        function updateNeed(wishIndex, needIndex, value) {
+            if (!state.userData.needs[wishIndex]) {
+                state.userData.needs[wishIndex] = [];
+            }
+            state.userData.needs[wishIndex][needIndex] = value;
+        }
+
+        function removeNeed(wishIndex, needIndex) {
+            state.userData.needs[wishIndex].splice(needIndex, 1);
+            
+            const needsContainer = document.getElementById(`needsForWish${wishIndex}`);
+            needsContainer.innerHTML = (state.userData.needs[wishIndex] || []).map((need, index) => `
+                <div class="skill-input-container">
+                    <textarea placeholder="اكتب احتياج" oninput="updateNeed(${wishIndex}, ${index}, this.value)">${need}</textarea>
+                    <button onclick="removeNeed(${wishIndex}, ${index})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function revealNeedsForm() {
+            document.getElementById("needsArea").classList.remove("hidden");
+        }
+
+        function buildValuesStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <iframe class="youtube-video" src="${youtubeVideos.part6}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <div id="valuesArea" class="hidden">
+                        <h2>ما القيم والمعتقدات التي تدفعك؟</h2>
+                        <div class="inspiration">${motivationalPhrases.values}</div>
+                        <div id="valuesContainer">
+                            ${state.userData.wishes.map((wish, wishIndex) => `
+                                <div class="wish-item">
+                                    <div class="wish-title">${wish.text || "أمنية بدون عنوان"}</div>
+                                    <div id="valuesForWish${wishIndex}">
+                                        ${((state.userData.values[wishIndex] || [])).map((value, valueIndex) => `
+                                            <div class="skill-input-container">
+                                                <textarea placeholder="اكتب قيمة أو معتقد" oninput="updateValue(${wishIndex}, ${valueIndex}, this.value)">${value}</textarea>
+                                                <button onclick="removeValue(${wishIndex}, ${valueIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <button onclick="addNewValue(${wishIndex})" class="small-btn" style="background-color: #86CDBB;">+ أضف قيمة جديدة</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="nextStep()">التالي →</button>
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', revealValuesForm);
+        }
+
+        function addNewValue(wishIndex) {
+            if (!state.userData.values[wishIndex]) {
+                state.userData.values[wishIndex] = [];
+            }
+            state.userData.values[wishIndex].push("");
+            
+            const valuesContainer = document.getElementById(`valuesForWish${wishIndex}`);
+            const valueIndex = state.userData.values[wishIndex].length - 1;
+            
+            const div = document.createElement("div");
+            div.className = "skill-input-container";
+            div.innerHTML = `
+                <textarea placeholder="اكتب قيمة أو معتقد" oninput="updateValue(${wishIndex}, ${valueIndex}, this.value)"></textarea>
+                <button onclick="removeValue(${wishIndex}, ${valueIndex})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+            `;
+            
+            valuesContainer.appendChild(div);
+        }
+
+        function updateValue(wishIndex, valueIndex, value) {
+            if (!state.userData.values[wishIndex]) {
+                state.userData.values[wishIndex] = [];
+            }
+            state.userData.values[wishIndex][valueIndex] = value;
+        }
+
+        function removeValue(wishIndex, valueIndex) {
+            state.userData.values[wishIndex].splice(valueIndex, 1);
+            
+            const valuesContainer = document.getElementById(`valuesForWish${wishIndex}`);
+            valuesContainer.innerHTML = (state.userData.values[wishIndex] || []).map((value, index) => `
+                <div class="skill-input-container">
+                    <textarea placeholder="اكتب قيمة أو معتقد" oninput="updateValue(${wishIndex}, ${index}, this.value)">${value}</textarea>
+                    <button onclick="removeValue(${wishIndex}, ${index})" class="small-btn" style="background-color: #E5554D;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function revealValuesForm() {
+            document.getElementById("valuesArea").classList.remove("hidden");
+        }
+
+        function buildSatisfactionStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <iframe class="youtube-video" src="${youtubeVideos.part7}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    <div id="satisfactionArea" class="hidden">
+                        <h2>كيف ستشعر إذا حققت رؤيتك؟</h2>
+                        <div class="inspiration">${motivationalPhrases.satisfaction}</div>
+                        <textarea placeholder="صف شعورك عند تحقيق رؤيتك" oninput="state.userData.satisfaction = this.value"></textarea>
+                        <button onclick="nextStep()">التالي →</button>
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', revealSatisfactionForm);
+        }
+
+        function revealSatisfactionForm() {
+            document.getElementById("satisfactionArea").classList.remove("hidden");
+        }
+
+        function finalPreviewStep() {
+            app.innerHTML = `
+                <div class="cover">
+                    <h2>استعد لرؤية رؤيتك الشخصية الكاملة</h2>
+                    <p>شاهد هذا الفيديو الختامي قبل أن تري ملخص رؤيتك</p>
+                    <iframe class="youtube-video" src="${youtubeVideos.part8}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
+                    
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+            setupYouTubePlayer('video', showFinalScreen);
+        }
+
+        function showFinalScreen() {
+            const btn = document.createElement("button");
+            btn.textContent = "عرض الرؤية";
+            btn.onclick = nextStep;
+            btn.style.backgroundColor = "#247EB1";
+            btn.style.color = "white";
+            btn.style.padding = "15px 30px";
+            btn.style.fontSize = "18px";
+            btn.style.borderRadius = "12px";
+            btn.style.marginTop = "20px";
+            document.querySelector(".cover").appendChild(btn);
+        }
+
+        function finalScreen() {
+            // بناء الرؤية النهائية
+            let finalVision = `أنا ${state.userData.name || "..."}، أؤمن أن الرؤية هي: ${state.userData.definition || "..."}.\n\n`;
+            finalVision += `أحتاج إلى رؤية لأنها: ${state.userData.why || "..."}.\n\n`;
+            
+            finalVision += "أمنياتي:\n";
+            state.userData.wishes.forEach((wish, index) => {
+                finalVision += `${index + 1}. ${wish.text || "..."}\n`;
+                if (wish.skills && wish.skills.length > 0) {
+                    finalVision += `   المهارات: ${wish.skills.join("، ")}\n`;
+                }
+                if (state.userData.needs[index] && state.userData.needs[index].length > 0) {
+                    finalVision += `   الاحتياجات: ${state.userData.needs[index].join("، ")}\n`;
+                }
+                if (state.userData.values[index] && state.userData.values[index].length > 0) {
+                    finalVision += `   القيم: ${state.userData.values[index].join("، ")}\n`;
+                }
+                finalVision += "\n";
+            });
+            
+            finalVision += `\nوسأشعر بالرضا عندما: ${state.userData.satisfaction || "..."}`;
+            
+            state.userData.finalVision = finalVision;
+            
+            const emailBody = `
+الرؤية الشخصية الكاملة:
+${finalVision}
+
+ملخص الرؤية:
+${state.userData.shortSummary || "لم يتم تقديم ملخص"}
+
+تفاصيل الرؤية:
+${generateVisionTable()}
+            `;
+            
+            app.innerHTML = `
+                <div class="cover">
+                    <h2>رؤيتك الشخصية الكاملة:</h2>
+                    <div class="summary-box">
+                        <div class="summary-title">الآن، نريد منك تلخيص رؤيتك في جملة أو جملتين قصيرتين:</div>
+                        <textarea class="summary-input" placeholder="اكتب تلخيصك هنا..." oninput="state.userData.shortSummary = this.value"></textarea>
+                    </div>
+                    
+                    <h3>ملخص رؤيتك:</h3>
+                    ${generateVisionTable()}
+                    
+                    
+<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+    <a href="mailto:ayasin2021@teachforqatar.org?subject=رؤيتي الشخصية" id="emailLink">
+        <button style="background-color: #E5554D;">📧 إرسال الرؤية</button>
+    </a>
+    <button onclick="exportToWord()" style="background-color: #934798;">💾 حفظ كـ Word</button>
+    <button onclick="printVision()" style="background-color: #247EB1;">🖨️ طباعة</button>
+</div>
+
+                    
+                    <div class="footer">
+                        جميع الحقوق محفوظة لفريق دليل 2025
+                    </div>
+                <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
+        }
+
+        
+        function generateVisionTable() {
+            let tableHTML = '<div class="summary-box">';
+            tableHTML += '<h3>تفاصيل الرؤية:</h3>';
+            tableHTML += '<p><strong>الاسم:</strong> ' + (state.userData.name || "غير معروف") + '</p>';
+            
+            state.userData.wishes.forEach((wish, index) => {
+                let wishText = '<p><strong>الأمنية ' + (index + 1) + ':</strong> ';
+                wishText += (wish.text || "بدون عنوان") + '. ';
+                
+                if (wish.skills && wish.skills.length > 0) {
+                    wishText += 'المهارات: ' + wish.skills.join("، ") + '. ';
+                }
+                if (state.userData.needs[index] && state.userData.needs[index].length > 0) {
+                    wishText += 'الاحتياجات: ' + state.userData.needs[index].join("، ") + '. ';
+                }
+                if (state.userData.values[index] && state.userData.values[index].length > 0) {
+                    wishText += 'القيم: ' + state.userData.values[index].join("، ") + '. ';
+                }
+                wishText += '</p>';
+                tableHTML += wishText;
+            });
+            
+            tableHTML += '<p><strong>مشاعر الرضا:</strong> ' + (state.userData.satisfaction || "...") + '</p>';
+            
+            tableHTML += '</div>';
+            return tableHTML;
+        }
+    
+
+        function downloadVision() {
+            const { finalVision, shortSummary } = state.userData;
+            const content = `
+الرؤية الشخصية:
+${finalVision}
+
+التلخيص:
+${shortSummary || "لم يتم تقديم ملخص"}
+
+تفاصيل الرؤية:
+${generateVisionTable().replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}
+            `;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'رؤيتي-الشخصية.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function setupYouTubePlayer(videoId, callback) {
+            // تحميل API يوتيوب إذا لم يكن محملًا
+            if (!window.YT) {
+                const tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                const firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            }
+
+            // الانتظار حتى يتم تحميل API
+            const checkYT = setInterval(() => {
+                if (window.YT && YT.loaded) {
+                    clearInterval(checkYT);
+                    initPlayer();
+                }
+            }, 100);
+
+            function initPlayer() {
+                const player = new YT.Player(videoId, {
+                    events: {
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+
+                function onPlayerStateChange(event) {
+                    if (event.data == YT.PlayerState.ENDED) {
+                        callback();
+                    }
+                }
+            }
+        }
+
+        function showNext() {
+            const nextBtn = document.getElementById("nextBtn");
+            if (nextBtn) nextBtn.style.display = "inline-block";
+        }
+
+        function nextStep() {
+            state.currentStep++;
+            steps[state.currentStep]();
+        }
+
+        steps[0]();
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script>
+    function exportToWord() {
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                       "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                       "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                       "<head><meta charset='utf-8'><title>رؤيتي</title></head><body>";
+        const footer = "</body></html>";
+        const sourceHTML = document.querySelector('.cover').innerHTML;
+        const source = header + sourceHTML + footer;
+        const blob = new Blob(['\ufeff', source], {
+            type: 'application/msword'
+        });
+        saveAs(blob, 'رؤيتي-الشخصية.doc');
+    }
+
+    function printVision() {
+        const original = document.body.innerHTML;
+        const visionHTML = document.querySelector('.cover').outerHTML;
+        document.body.innerHTML = visionHTML;
+        window.print();
+        document.body.innerHTML = original;
+    }
+</script>
+
+</body>
+
+</html>
