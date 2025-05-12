@@ -285,7 +285,9 @@
         };
 
         const motivationalPhrases = {
-            why: "لماذا تهتم ببناء رؤية لحياتك؟ ما الذي ستحققه بوجود هذه الرؤية؟",
+       name: "ما الذي يجعل رؤيتك فريدة؟ كيف ترى نفسك في المستقبل؟",
+            definition: "اسمك هو هويتك، اكتبه بفخر واعتزاز",
+       why: "لماذا تهتم ببناء رؤية لحياتك؟ ما الذي ستحققه بوجود هذه الرؤية؟",
             wish: "لا تضع حدوداً لأحلامك، اكتب كل ما تطمح إليه دون خوف",
             skills: "كل شخص لديه مواهب فريدة، ما هي المهارات التي تميزك؟",
             needs: "ما الدعم أو الموارد التي تحتاجها لتحقيق أحلامك؟",
@@ -731,17 +733,11 @@ ${generateVisionTable()}
                     
                     
 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-    <a href="mailto:ayasin2021@teachforqatar.org?subject=رؤيتي الشخصية" id="emailLink">
-        <button style="background-color: #E5554D;">📧 إرسال الرؤية</button>
-    </a>
     <button onclick="exportToWord()" style="background-color: #934798;">💾 حفظ كـ Word</button>
-    <button onclick="printVision()" style="background-color: #247EB1;">🖨️ طباعة</button>
 </div>
 
                     
-                    <div class="footer">
-                        جميع الحقوق محفوظة لفريق دليل 2025
-                    </div>
+           
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
         }
 
@@ -846,17 +842,175 @@ ${generateVisionTable().replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
     function exportToWord() {
-        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
-                       "xmlns:w='urn:schemas-microsoft-com:office:word' " +
-                       "xmlns='http://www.w3.org/TR/REC-html40'>" +
-                       "<head><meta charset='utf-8'><title>رؤيتي</title></head><body>";
-        const footer = "</body></html>";
-        const sourceHTML = document.querySelector('.cover').innerHTML;
-        const source = header + sourceHTML + footer;
+        const header = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                  xmlns:w='urn:schemas-microsoft-com:office:word'
+                  xmlns='http://www.w3.org/TR/REC-html40'>
+            <head>
+                <meta charset='utf-8'>
+                <title>رؤيتي الشخصية</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        direction: rtl;
+                        padding: 20px;
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 30px;
+                        border-bottom: 2px solid #247EB1;
+                        padding-bottom: 15px;
+                    }
+                    h1 {
+                        color: #247EB1;
+                        font-size: 24pt;
+                        margin-bottom: 10px;
+                    }
+                    h2 {
+                        color: #934798;
+                        font-size: 18pt;
+                        margin-top: 25px;
+                        border-right: 4px solid #934798;
+                        padding-right: 10px;
+                    }
+                    .vision-section {
+                        background-color: #f9f9f9;
+                        border-radius: 8px;
+                        padding: 15px;
+                        margin: 15px 0;
+                        border-right: 3px solid #F8CD71;
+                    }
+                    .wish-item {
+                        margin-bottom: 20px;
+                        padding: 10px;
+                        background-color: #f0f8ff;
+                        border-radius: 5px;
+                    }
+                    .wish-title {
+                        font-weight: bold;
+                        color: #E5554D;
+                        margin-bottom: 5px;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        font-size: 10pt;
+                        color: #777;
+                        border-top: 1px solid #ddd;
+                        padding-top: 10px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 15px 0;
+                    }
+                    th {
+                        background-color: #247EB1;
+                        color: white;
+                        padding: 10px;
+                        text-align: right;
+                    }
+                    td {
+                        padding: 8px;
+                        border-bottom: 1px solid #ddd;
+                        text-align: right;
+                    }
+                </style>
+            </head>
+            <body>
+        `;
+
+        const footer = `
+                <div class="footer">
+                    تم إنشاء هذه الوثيقة بواسطة أداة "رؤيتي الشخصية" - جميع الحقوق محفوظة لفريق دليل 2025
+                </div>
+            </body>
+            </html>
+        `;
+
+        // إنشاء محتوى Word مع تنسيق احترافي
+        let content = `
+            <div class="header">
+                <h1>رؤيتي الشخصية</h1>
+                <p>تاريخ الإنشاء: ${new Date().toLocaleDateString('ar-EG')}</p>
+            </div>
+
+            <div class="vision-section">
+                <h2>المقدمة</h2>
+                <p><strong>الاسم:</strong> ${state.userData.name || "غير معروف"}</p>
+                <p><strong>تعريف الرؤية:</strong> ${state.userData.definition || "..."}</p>
+                <p><strong>أهمية الرؤية:</strong> ${state.userData.why || "..."}</p>
+            </div>
+        `;
+
+        if (state.userData.shortSummary) {
+            content += `
+                <div class="vision-section">
+                    <h2>ملخص الرؤية</h2>
+                    <p>${state.userData.shortSummary}</p>
+                </div>
+            `;
+        }
+
+        content += `<div class="vision-section"><h2>تفاصيل الرؤية</h2>`;
+
+        state.userData.wishes.forEach((wish, index) => {
+            content += `
+                <div class="wish-item">
+                    <div class="wish-title">الأمنية ${index + 1}: ${wish.text || "بدون عنوان"}</div>
+                    ${wish.skills && wish.skills.length > 0 ? 
+                        `<p><strong>المهارات:</strong> ${wish.skills.join("، ")}</p>` : ''}
+                    ${state.userData.needs[index] && state.userData.needs[index].length > 0 ? 
+                        `<p><strong>الاحتياجات:</strong> ${state.userData.needs[index].join("، ")}</p>` : ''}
+                    ${state.userData.values[index] && state.userData.values[index].length > 0 ? 
+                        `<p><strong>القيم:</strong> ${state.userData.values[index].join("، ")}</p>` : ''}
+                </div>
+            `;
+        });
+
+        content += `</div>`;
+
+        if (state.userData.satisfaction) {
+            content += `
+                <div class="vision-section">
+                    <h2>مشاعر الرضا</h2>
+                    <p>${state.userData.satisfaction}</p>
+                </div>
+            `;
+        }
+
+        // إنشاء جدول ملخص (اختياري)
+        content += `
+            <div class="vision-section">
+                <h2>ملخص الرؤية</h2>
+                <table>
+                    <tr>
+                        <th>العنصر</th>
+                        <th>التفاصيل</th>
+                    </tr>
+                    <tr>
+                        <td>عدد الأمنيات</td>
+                        <td>${state.userData.wishes.length}</td>
+                    </tr>
+                    <tr>
+                        <td>إجمالي المهارات</td>
+                        <td>${state.userData.wishes.reduce((acc, wish) => acc + (wish.skills ? wish.skills.length : 0), 0)}</td>
+                    </tr>
+                    <tr>
+                        <td>تاريخ الإنشاء</td>
+                        <td>${new Date().toLocaleDateString('ar-EG')}</td>
+                    </tr>
+                </table>
+            </div>
+        `;
+
+        const source = header + content + footer;
         const blob = new Blob(['\ufeff', source], {
             type: 'application/msword'
         });
-        saveAs(blob, 'رؤيتي-الشخصية.doc');
+        saveAs(blob, `رؤيتي-الشخصية-${state.userData.name || 'مجهول'}.doc`);
     }
 
     function printVision() {
