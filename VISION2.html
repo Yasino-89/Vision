@@ -1010,7 +1010,7 @@ ${generateVisionTable().replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}
         const blob = new Blob(['\ufeff', source], {
             type: 'application/msword'
         });
-        saveAs(blob, `رؤيتي-الشخصية-${state.userData.name || 'مجهول'}.doc`);
+        saveAs(blob, `رؤيتي-الشخصية-${state.userData.name || 'مجهول'}.docx`);
     }
 
     function printVision() {
