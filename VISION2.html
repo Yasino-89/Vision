@@ -260,15 +260,53 @@
             flex: 1;
             margin-right: 10px;
         }
+        
+        .save-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        
+        .save-notification.show {
+            opacity: 1;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .back-btn {
+            background-color: #F69C7A;
+        }
+        
+        .back-btn:hover {
+            background-color: #e07d5a;
+        }
     </style>
 </head>
 
 <body>
     <div id="app"></div>
+    <div id="saveNotification" class="save-notification">تم حفظ البيانات تلقائياً</div>
 
     <script>
         const app = document.getElementById("app");
-        const state = {
+        const saveNotification = document.getElementById("saveNotification");
+        
+        // تحميل البيانات المحفوظة من localStorage
+        const savedData = localStorage.getItem('visionBuilderData');
+        
+        const state = savedData ? JSON.parse(savedData) : {
             currentStep: 0,
             userData: {
                 name: "",
@@ -284,10 +322,24 @@
             }
         };
 
+        // وظيفة لحفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('visionBuilderData', JSON.stringify(state));
+            showSaveNotification();
+        }
+        
+        // عرض إشعار الحفظ
+        function showSaveNotification() {
+            saveNotification.classList.add('show');
+            setTimeout(() => {
+                saveNotification.classList.remove('show');
+            }, 2000);
+        }
+
         const motivationalPhrases = {
             name: "كيف ترى نفسك في المستقبل؟",
             definition: "اسمك هو هويتك، اكتبه بفخر واعتزاز",
-       why: "لماذا تهتم ببناء رؤية لحياتك؟ ما الذي ستحققه بوجود هذه الرؤية؟",
+            why: "لماذا تهتم ببناء رؤية لحياتك؟ ما الذي ستحققه بوجود هذه الرؤية؟",
             wish: "لا تضع حدوداً لأحلامك، اكتب كل ما تطمح إليه دون خوف",
             skills: "كل شخص لديه مواهب فريدة، ما هي المهارات التي تميزك؟",
             needs: "ما الدعم أو الموارد التي تحتاجها لتحقيق أحلامك؟",
@@ -332,11 +384,14 @@
                 <div class="cover">
                     <h2>ما هي الرؤية الشخصية؟</h2>
                     <div class="inspiration">${motivationalPhrases.definition}</div>
-                    <input type="text" placeholder="اكتب اسمك" oninput="state.userData.name = this.value">
+                    <input type="text" placeholder="اكتب اسمك" value="${state.userData.name || ''}" oninput="state.userData.name = this.value; saveData()">
                     <div class="inspiration">${motivationalPhrases.name}</div>
-                    <textarea placeholder="ما تعريفك للرؤية الشخصية؟" oninput="state.userData.definition = this.value"></textarea>
+                    <textarea placeholder="ما تعريفك للرؤية الشخصية؟" oninput="state.userData.definition = this.value; saveData()">${state.userData.definition || ''}</textarea>
                     <iframe class="youtube-video" src="${youtubeVideos.part1}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
-                    <button id="nextBtn" style="display:none" onclick="nextStep()">التالي →</button>
+                    <div class="navigation-buttons">
+                        <button class="back-btn" onclick="prevStep()" style="display:none">← السابق</button>
+                        <button id="nextBtn" onclick="nextStep()" style="display:none">التالي →</button>
+                    </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', showNext);
         }
@@ -346,9 +401,12 @@
                 <div class="cover">
                     <h2>لماذا برأيك تحتاج إلى رؤية شخصية؟</h2>
                     <div class="inspiration">${motivationalPhrases.why}</div>
-                    <textarea placeholder="اكتب إجابتك هنا" oninput="state.userData.why = this.value"></textarea>
+                    <textarea placeholder="اكتب إجابتك هنا" oninput="state.userData.why = this.value; saveData()">${state.userData.why || ''}</textarea>
                     <iframe class="youtube-video" src="${youtubeVideos.part2}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
-                    <button id="nextBtn" style="display:none" onclick="nextStep()">التالي →</button>
+                    <div class="navigation-buttons">
+                        <button class="back-btn" onclick="prevStep()">← السابق</button>
+                        <button id="nextBtn" onclick="nextStep()" style="display:none">التالي →</button>
+                    </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', showNext);
         }
@@ -364,13 +422,16 @@
                             ${state.userData.wishes.length > 0 ? state.userData.wishes.map((wish, index) => `
                                 <div class="wish-item" data-index="${index}">
                                     <div class="wish-title">الأمنية ${index + 1}</div>
-                                    <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value">${wish.text}</textarea>
+                                    <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value; saveData()">${wish.text || ''}</textarea>
                                     <button onclick="removeWish(${index})" class="small-btn" style="background-color: #E5554D;">حذف الأمنية</button>
                                 </div>
                             `).join('') : ''}
                         </div>
                         <button onclick="addNewWish()" class="small-btn" style="background-color: #86CDBB;">+ أضف أمنية جديدة</button>
-                        <button onclick="nextStep()">التالي →</button>
+                        <div class="navigation-buttons">
+                            <button class="back-btn" onclick="prevStep()">← السابق</button>
+                            <button onclick="nextStep()">التالي →</button>
+                        </div>
                     </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', revealWishesForm);
@@ -379,6 +440,7 @@
         function addNewWish() {
             const newWish = { text: "", skills: [] };
             state.userData.wishes.push(newWish);
+            saveData();
             
             // إعادة بناء الواجهة دون إعادة تحميل الصفحة
             const wishesContainer = document.getElementById("wishesContainer");
@@ -389,7 +451,7 @@
             div.dataset.index = index;
             div.innerHTML = `
                 <div class="wish-title">الأمنية ${index + 1}</div>
-                <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value"></textarea>
+                <textarea placeholder="اكتب أمنيتك هنا" oninput="state.userData.wishes[${index}].text = this.value; saveData()"></textarea>
                 <button onclick="removeWish(${index})" class="small-btn" style="background-color: #E5554D;">حذف الأمنية</button>
             `;
             
@@ -398,6 +460,7 @@
 
         function removeWish(index) {
             state.userData.wishes.splice(index, 1);
+            saveData();
             const container = document.getElementById("wishesContainer");
             const item = container.querySelector(`[data-index="${index}"]`);
             if (item) container.removeChild(item);
@@ -414,6 +477,7 @@
                 if (textarea) {
                     textarea.oninput = (e) => {
                         state.userData.wishes[newIndex].text = e.target.value;
+                        saveData();
                     };
                 }
                 
@@ -454,7 +518,10 @@
                                 </div>
                             `).join('')}
                         </div>
-                        <button onclick="nextStep()">التالي →</button>
+                        <div class="navigation-buttons">
+                            <button class="back-btn" onclick="prevStep()">← السابق</button>
+                            <button onclick="nextStep()">التالي →</button>
+                        </div>
                     </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', revealSkillsForm);
@@ -465,6 +532,7 @@
                 state.userData.wishes[wishIndex].skills = [];
             }
             state.userData.wishes[wishIndex].skills.push("");
+            saveData();
             
             // إضافة حقل الإدخال الجديد دون إعادة تحميل الصفحة
             const skillsContainer = document.getElementById(`skillsForWish${wishIndex}`);
@@ -482,10 +550,12 @@
 
         function updateSkill(wishIndex, skillIndex, value) {
             state.userData.wishes[wishIndex].skills[skillIndex] = value;
+            saveData();
         }
 
         function removeSkill(wishIndex, skillIndex) {
             state.userData.wishes[wishIndex].skills.splice(skillIndex, 1);
+            saveData();
             
             // إعادة بناء واجهة المهارات لهذه الأمنية فقط
             const skillsContainer = document.getElementById(`skillsForWish${wishIndex}`);
@@ -524,7 +594,10 @@
                                 </div>
                             `).join('')}
                         </div>
-                        <button onclick="nextStep()">التالي →</button>
+                        <div class="navigation-buttons">
+                            <button class="back-btn" onclick="prevStep()">← السابق</button>
+                            <button onclick="nextStep()">التالي →</button>
+                        </div>
                     </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', revealNeedsForm);
@@ -535,6 +608,7 @@
                 state.userData.needs[wishIndex] = [];
             }
             state.userData.needs[wishIndex].push("");
+            saveData();
             
             const needsContainer = document.getElementById(`needsForWish${wishIndex}`);
             const needIndex = state.userData.needs[wishIndex].length - 1;
@@ -554,10 +628,12 @@
                 state.userData.needs[wishIndex] = [];
             }
             state.userData.needs[wishIndex][needIndex] = value;
+            saveData();
         }
 
         function removeNeed(wishIndex, needIndex) {
             state.userData.needs[wishIndex].splice(needIndex, 1);
+            saveData();
             
             const needsContainer = document.getElementById(`needsForWish${wishIndex}`);
             needsContainer.innerHTML = (state.userData.needs[wishIndex] || []).map((need, index) => `
@@ -595,7 +671,10 @@
                                 </div>
                             `).join('')}
                         </div>
-                        <button onclick="nextStep()">التالي →</button>
+                        <div class="navigation-buttons">
+                            <button class="back-btn" onclick="prevStep()">← السابق</button>
+                            <button onclick="nextStep()">التالي →</button>
+                        </div>
                     </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', revealValuesForm);
@@ -606,6 +685,7 @@
                 state.userData.values[wishIndex] = [];
             }
             state.userData.values[wishIndex].push("");
+            saveData();
             
             const valuesContainer = document.getElementById(`valuesForWish${wishIndex}`);
             const valueIndex = state.userData.values[wishIndex].length - 1;
@@ -625,10 +705,12 @@
                 state.userData.values[wishIndex] = [];
             }
             state.userData.values[wishIndex][valueIndex] = value;
+            saveData();
         }
 
         function removeValue(wishIndex, valueIndex) {
             state.userData.values[wishIndex].splice(valueIndex, 1);
+            saveData();
             
             const valuesContainer = document.getElementById(`valuesForWish${wishIndex}`);
             valuesContainer.innerHTML = (state.userData.values[wishIndex] || []).map((value, index) => `
@@ -650,8 +732,11 @@
                     <div id="satisfactionArea" class="hidden">
                         <h2>كيف ستشعر إذا حققت رؤيتك؟</h2>
                         <div class="inspiration">${motivationalPhrases.satisfaction}</div>
-                        <textarea placeholder="صف شعورك عند تحقيق رؤيتك" oninput="state.userData.satisfaction = this.value"></textarea>
-                        <button onclick="nextStep()">التالي →</button>
+                        <textarea placeholder="صف شعورك عند تحقيق رؤيتك" oninput="state.userData.satisfaction = this.value; saveData()">${state.userData.satisfaction || ''}</textarea>
+                        <div class="navigation-buttons">
+                            <button class="back-btn" onclick="prevStep()">← السابق</button>
+                            <button onclick="nextStep()">التالي →</button>
+                        </div>
                     </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', revealSatisfactionForm);
@@ -667,7 +752,10 @@
                     <h2>استعد لرؤية رؤيتك الشخصية الكاملة</h2>
                     <p>شاهد هذا الفيديو الختامي قبل أن تري ملخص رؤيتك</p>
                     <iframe class="youtube-video" src="${youtubeVideos.part8}?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id="video"></iframe>
-                    
+                    <div class="navigation-buttons">
+                        <button class="back-btn" onclick="prevStep()">← السابق</button>
+                        <button onclick="showFinalScreen()" style="display:none">عرض الرؤية</button>
+                    </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
             setupYouTubePlayer('video', showFinalScreen);
         }
@@ -725,22 +813,44 @@ ${generateVisionTable()}
                     <h2>رؤيتك الشخصية الكاملة:</h2>
                     <div class="summary-box">
                         <div class="summary-title">الآن، نريد منك تلخيص رؤيتك في جملة أو جملتين قصيرتين:</div>
-                        <textarea class="summary-input" placeholder="اكتب تلخيصك هنا..." oninput="state.userData.shortSummary = this.value"></textarea>
+                        <textarea class="summary-input" placeholder="اكتب تلخيصك هنا..." oninput="state.userData.shortSummary = this.value; saveData()">${state.userData.shortSummary || ''}</textarea>
                     </div>
                     
                     <h3>ملخص رؤيتك:</h3>
                     ${generateVisionTable()}
                     
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="exportToWord()" style="background-color: #934798;">💾 حفظ كـ Word</button>
+                        <button onclick="clearAllData()" style="background-color: #E5554D;">🗑️ مسح جميع البيانات</button>
+                    </div>
                     
-<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-    <button onclick="exportToWord()" style="background-color: #934798;">💾 حفظ كـ Word</button>
-</div>
-
-                    
-           
+                    <div class="navigation-buttons">
+                        <button class="back-btn" onclick="prevStep()">← السابق</button>
+                        <button onclick="nextStep()" style="display:none">التالي →</button>
+                    </div>
                 <div class="footer">جميع الحقوق محفوظة لفريق دليل 2025</div></div>`;
         }
 
+        // وظيفة مسح جميع البيانات
+        function clearAllData() {
+            if (confirm("هل أنت متأكد أنك تريد مسح جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه.")) {
+                localStorage.removeItem('visionBuilderData');
+                state.currentStep = 0;
+                state.userData = {
+                    name: "",
+                    definition: "",
+                    why: "",
+                    wishes: [],
+                    skills: [],
+                    needs: [],
+                    values: [],
+                    satisfaction: "",
+                    finalVision: "",
+                    shortSummary: ""
+                };
+                steps[0](); // العودة إلى الشاشة الأولى
+            }
+        }
         
         function generateVisionTable() {
             let tableHTML = '<div class="summary-box">';
@@ -770,6 +880,14 @@ ${generateVisionTable()}
             return tableHTML;
         }
     
+        // وظيفة للعودة للخطوة السابقة
+        function prevStep() {
+            if (state.currentStep > 0) {
+                state.currentStep--;
+                saveData();
+                steps[state.currentStep]();
+            }
+        }
 
         function downloadVision() {
             const { finalVision, shortSummary } = state.userData;
@@ -832,11 +950,15 @@ ${generateVisionTable().replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}
         }
 
         function nextStep() {
-            state.currentStep++;
-            steps[state.currentStep]();
+            if (state.currentStep < steps.length - 1) {
+                state.currentStep++;
+                saveData();
+                steps[state.currentStep]();
+            }
         }
 
-        steps[0]();
+        // بدء التطبيق بالشاشة الأولى أو بالبيانات المحفوظة
+        steps[state.currentStep]();
     </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
